@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}New Issue{% endblock %}
+
+{% block content %}
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#miModal">
+        Create Issue
+    </button>         
+    <div class="modal" tabindex="-1" id="miModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Issue</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'board'  %}"  id="myForm">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-outline-success" value="Create" onclick="document.getElementById('myForm').submit();">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

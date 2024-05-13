@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock head %}
+{%block title %}Home{% endblock %}
+
+{% block content %}
+    
+    <div class="main-container">
+        <div class="img-container">
+            <img src="{% static 'img/pibe.png'%}" alt="pibe">
+        </div>
+        <div class="rigth-container">
+            <h1>Welcome to KanTech</h1>
+            <p>Organize your tasks efficiently and visually with our easy-to-use Kanban board. Whether you are managing a team project or simply keeping track of your own tasks, our application allows you to create custom boards with drag-and-drop columns and cards.</p>
+        </div>
+        </div>
+    </div>
+{% endblock content%}  
