@@ -23,6 +23,10 @@ class Issue(models.Model):
         on_delete=models.CASCADE,
         related_name="assignee"
     )
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.CASCADE
+    )
     created_on = models.DateTimeField(auto_now_add=True)
     is_done = models.BooleanField(default=False)
 

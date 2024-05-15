@@ -9,3 +9,4 @@ class SignUpView(CreateView):
     success_url = reverse_lazy('login')
 
 
+

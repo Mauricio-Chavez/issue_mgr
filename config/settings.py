@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-uxq*i+6dh#3hdcfra$&kl7kd8x5rd_selr^o9smsvr6l!k20@p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','localhost']
 
 
 # Application definition
@@ -123,6 +123,9 @@ STATICFILES_DIRS = [str(BASE_DIR.joinpath("static"))]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.CustomUser'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

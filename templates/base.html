@@ -24,7 +24,43 @@
                 <div class="navbar-nav">
                     <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
                     <a class="nav-link" href="{% url 'about'  %}">About</a>
+                    {% if user.is_authenticated %}
                     <a class="nav-link" href="{% url 'board'  %}">Board</a>
+                    <a class="nav-link" href="{% url 'password_change' %}">Change Password</a>
+                    {%if user.role.name == 'product owner'%}
+                    <a class="nav-link" href="{% url 'new'  %}">Create Issue</a>
+                    {%endif%}
+                    <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#miModal">
+                        Log Out
+                    </button>
+                    <p style="padding: 0; text-align: center; margin-bottom: auto; margin-top: auto;"class="nav-link">{{user}}</p>          
+                    <div class="modal" tabindex="-1" id="miModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Log Out</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to log out?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                        <form method="post" action="{% url 'logout' %}">
+                                            {% csrf_token %}
+                                            <input type="submit" class="btn btn-outline-danger" value="Log Out">
+                                        </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+                    <a class="nav-link" href="{% url 'password_reset' %}">Reset Password</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

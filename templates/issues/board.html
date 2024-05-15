@@ -1,31 +1,137 @@
 {% extends 'base.html' %}
-
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/board.css' %}">
+{% endblock head %}
 {% block title %}New Issue{% endblock %}
 
 {% block content %}
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#miModal">
-        Create Issue
-    </button>         
-    <div class="modal" tabindex="-1" id="miModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Create Issue</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+    <div class="row">
+        <div class="col board-col">
+            <h1>To do</h1>
+            {% for issue in to_do_list %}
+                <div class="row">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ issue.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{issue.summary | truncatechars:64}}</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">Assignee: {{issue.assignee}}</h6>
+                            <p class="card-text">{{issue.description | truncatechars:64}}</p>
+                            <form action="{% url 'update_status' issue.id%}" method="post">
+                                <input type="hidden" name="status" id="id_status" value="2">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-outline-success card-btn" value="Start">
+                            </form>
+                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalT{{ loop.index}}">Details</button>
+                            <div class="modal fade" id="modalT{{ loop.index }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">{{ issue.name }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6 class="card-subtitle mb-2 text-body-secondary">{{issue.summary}}</h6>
+                                        <h6 class="card-subtitle mb-2 text-body-secondary">Assignee: {{issue.assignee}}</h6>
+                                        <h6 class="card-subtitle mb-2 text-body-secondary">Status: {{issue.status.name}}</h6>
+                                        <h6 class="card-subtitle mb-2 text-body-secondary">Date: {{issue.created_on}}</h6>
+                                        <p class="card-text">{{issue.description}}</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form method="post" action="{% url 'board'  %}"  id="myForm">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                    </form>
+            {%endfor%}
+        </div>
+        <div class="col board-col">
+            <h1>In Progress</h1>
+            {% for issue in in_prog_list %}
+                <div class="row">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ issue.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{issue.summary | truncatechars:64}}</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">Assignee: {{issue.assignee}}</h6>
+                            <p class="card-text">{{issue.description | truncatechars:64}}</p>
+                            <form action="{% url 'update_status' issue.id%}" method="post">
+                                <input type="hidden" name="status" id="id_status" value="3">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-outline-warning card-btn" value="Start">
+                            </form>
+                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalP{{ loop.index}}">Details</button>
+                            <div class="modal fade" id="modalP{{ loop.index }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">{{ issue.name }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6 class="card-subtitle mb-2 text-body-secondary">{{issue.summary}}</h6>
+                                        <h6 class="card-subtitle mb-2 text-body-secondary">Assignee: {{issue.assignee}}</h6>
+                                        <h6 class="card-subtitle mb-2 text-body-secondary">Status: {{issue.status.name}}</h6>
+                                        <h6 class="card-subtitle mb-2 text-body-secondary">Date: {{issue.created_on}}</h6>
+                                        <p class="card-text">{{issue.description}}</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-outline-success" value="Create" onclick="document.getElementById('myForm').submit();">
+            {%endfor%}
+        </div>
+        <div class="col board-col">
+            <h1>Done</h1>
+            {% for issue in done_list %}
+                <div class="row">
+                    <a class="card" style="text-decoration: none; ">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ issue.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{issue.summary | truncatechars:64}}</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">Assignee: {{issue.assignee}}</h6>
+                            <p class="card-text">{{issue.description | truncatechars:64}}</p>
+                            {%if user.role.name == 'scrum master'%}
+                            <form action="{% url 'update_status' issue.id%}" method="post">
+                                <input type="hidden" name="status" id="id_status" value="1">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-outline-danger card-btn" value="Resart">
+                            </form>
+                            {%endif%}
+                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalD{{ loop.index}}">Details</button>
+                            <div class="modal fade" id="modalD{{ loop.index }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">{{ issue.name }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6 class="card-subtitle mb-2 text-body-secondary">{{issue.summary}}</h6>
+                                        <h6 class="card-subtitle mb-2 text-body-secondary">Assignee: {{issue.assignee}}</h6>
+                                        <h6 class="card-subtitle mb-2 text-body-secondary">Status: {{issue.status.name}}</h6>
+                                        <h6 class="card-subtitle mb-2 text-body-secondary">Date: {{issue.created_on}}</h6>
+                                        <p class="card-text">{{issue.description}}</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </div>
+            {%endfor%}
         </div>
     </div>
 {% endblock content %}
